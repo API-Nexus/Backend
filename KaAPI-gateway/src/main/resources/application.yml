@@ -1,0 +1,47 @@
+server:
+  port: 8090
+
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: api_route
+          uri: http://localhost:8123
+          predicates:
+            - Path=/api/**
+      default-filters:
+        - AddResponseHeader=source,kaka
+#        - id: add_request_header_route
+#          uri: http://localhost:8123/
+#          predicates:
+#            - Path=/api/**
+#          filters:
+#            - AddRequestHeader=kaka, blue
+#            - AddRequestParameter=name,kassaking
+#            - name: CircuitBreaker
+#              args:
+#                name: myCircuitBreaker
+#                fallbackUri: forward:/fallback
+#            - RewritePath=/consumingServiceEndpoint, /backingServiceEndpoint
+#        - id: ka-fallback
+#          uri: https://www.4399.com
+#          predicates:
+#            - Path=/fallback
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          gateway: trace
+
+
+dubbo:
+  application:
+    name: dubbo-springboot-demo-provider
+  protocol:
+    name: dubbo
+    port: 22223
+  registry:
+    id: nacos-registry
+    address: nacos://localhost:8848
